@@ -11,7 +11,7 @@ fn min_pair(a: & Option<(f32, f32)>, b: & Option<(f32, f32)>) -> Option<(f32, f3
     }
 }
 
-fn minmax(seq: & Vec<f32>, adj: bool) -> Option<(f32, f32)> {
+fn minmax(seq: &[f32], adj: bool) -> Option<(f32, f32)> {
     let mut min: (usize, &f32) = (0, &seq[0]);
     let mut max: (usize, &f32) = (0, &seq[0]);
 
@@ -29,14 +29,14 @@ fn minmax(seq: & Vec<f32>, adj: bool) -> Option<(f32, f32)> {
     }
     if min.0 > max.0 {
         let spl;
-        let s1: Vec<f32>;
-        let s2: Vec<f32>;
+        let s1: &[f32];
+        let s2: &[f32];
         let mm1: Option<(f32, f32)>;
         let mm2: Option<(f32, f32)>;
 
         spl = seq.split_at(max.0 + 1);
-        s1 = spl.0.to_vec();
-        s2 = spl.1.to_vec();
+        s1 = spl.0;
+        s2 = spl.1;
         if s1.len() == 0 || s2.len() == 0 {
             return None;
         }
@@ -45,8 +45,8 @@ fn minmax(seq: & Vec<f32>, adj: bool) -> Option<(f32, f32)> {
         return min_pair(&mm1, &mm2);
     }
     if adj && min.0 + 1 == max.0 {
-        let mut s1: Vec<f32> = seq.clone();
-        let mut s2: Vec<f32> = seq.clone();
+        let mut s1: Vec<f32> = seq.clone().to_vec();
+        let mut s2: Vec<f32> = seq.clone().to_vec();
 
         let mm1: Option<(f32, f32)>;
         let mm2: Option<(f32, f32)>;
