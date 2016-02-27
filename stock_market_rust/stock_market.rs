@@ -1,29 +1,32 @@
-fn cmp_key(tup: &(usize, &f32)) -> i64 {
-    return (tup.1 * 1000.0) as i64;
-}
-
 fn minmax(seq: & Vec<f32>, adj: bool) -> (f32, f32) {
-    let min: (usize, &f32);
-    let max: (usize, &f32);
+    let mut min: (usize, &f32) = (0, &seq[0]);
+    let mut max: (usize, &f32) = (0, &seq[0]);
 
-    let en = seq.iter().enumerate();
-
-    min = en.clone().min_by_key(cmp_key).unwrap();
-    max = en.clone().max_by_key(cmp_key).unwrap();
+    for (i, e) in seq.iter().enumerate() {
+        if e < min.1 {
+            min = (i, e);
+        }
+        if e > max.1 {
+            max = (i, e);
+        }
+    }
 
     if min.1 == max.1 {
-        return (seq[0], seq[0]);
+        return (-1.0, -1.0); // TODO convert tuple into option
     }
     if min.0 > max.0 {
         let spl;
-        let mut s1: Vec<f32> = vec! [];
-        let mut s2: Vec<f32> = vec! [];
+        let s1: Vec<f32>;
+        let s2: Vec<f32>;
         let mm1: (f32, f32);
         let mm2: (f32, f32);
 
         spl = seq.split_at(max.0 + 1);
-        s1.extend_from_slice(spl.0);
-        s2.extend_from_slice(spl.1);
+        s1 = spl.0.to_vec();
+        s2 = spl.1.to_vec();
+        if s1.len() == 0 || s2.len() == 0 {
+            return (-1.0, -1.0);
+        }
         mm1 = minmax(& s1, true);
         mm2 = minmax(& s2, true);
         if (mm1.1 - mm1.0) >= (mm2.1 - mm2.0) {
