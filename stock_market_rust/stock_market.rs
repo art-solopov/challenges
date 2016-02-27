@@ -1,3 +1,6 @@
+use std::io;
+use std::str::FromStr;
+
 fn minmax(seq: & Vec<f32>, adj: bool) -> (f32, f32) {
     let mut min: (usize, &f32) = (0, &seq[0]);
     let mut max: (usize, &f32) = (0, &seq[0]);
@@ -57,6 +60,18 @@ fn minmax(seq: & Vec<f32>, adj: bool) -> (f32, f32) {
 }
 
 fn main() {
-    let market: Vec<f32> = vec![4.0, 1.0, 7.0, 4.0, 5.0];
-    println!("{:?}", minmax(&market, true));
+    let mut input = String::new();
+    let market: Vec<f32>;
+    let mm: (f32, f32);
+
+    io::stdin().read_line(&mut input);
+    market = input.split_whitespace()
+        .map(|e| f32::from_str(e).unwrap())
+        .collect();
+
+    mm = minmax(&market, true);
+    match mm {
+        (-1.0, -1.0) => println!("No result"),
+        _ => println!("{} {}", mm.0, mm.1),
+    }
 }
