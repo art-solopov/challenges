@@ -1,7 +1,6 @@
-require 'bundler/setup'
-Bundler.require(:default)
-require_relative 'arangodb/cursor'
-require_relative 'arangodb/collection'
+require 'arangodb/cursor'
+require 'arangodb/query'
+require 'arangodb/collection'
 
 module ArangoDB
   class << self
