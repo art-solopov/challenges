@@ -20,5 +20,13 @@ module ArangoDB
       return if @persisted
       ArangoDB.connection.post('collection', { name: @name }).success?
     end
+
+    def first(count)
+      SimpleQuery.new(:first, { collection: @name, count: count })
+    end
+
+    def last(count)
+      SimpleQuery.new(:last, { collection: @name, count: count })
+    end
   end
 end

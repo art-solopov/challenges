@@ -3,8 +3,11 @@ module ArangoDB
     include Virtus.model
 
     attribute :id, Integer
-    attribute :has_mode, Boolean
+    attribute :has_more, Boolean
     attribute :result, Array
+    attribute :count, Integer
+    attribute :error, String
+    attribute :status, Integer
 
     def initialize(options)
       super
@@ -14,10 +17,13 @@ module ArangoDB
     end
 
     def from_response(response)
+      @status = response.status
       body = response.body
       @has_more = body['hasMore']
       @result = body['result']
       @id = body['id']
+      @count = body['count']
+      @error = body['errorMessage']
     end
 
     def next
