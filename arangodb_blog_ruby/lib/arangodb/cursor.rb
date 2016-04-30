@@ -30,5 +30,9 @@ module ArangoDB
       response = ArangoDB.connection.put "cursor/#{id}"
       from_response response
     end
+
+    def as(klass)
+      @result.map { |e| klass.new(e) }
+    end
   end
 end
