@@ -1,6 +1,7 @@
 require 'arangodb/cursor'
 require 'arangodb/query'
 require 'arangodb/collection'
+require 'arangodb/model'
 
 module ArangoDB
   class << self
