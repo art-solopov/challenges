@@ -5,7 +5,7 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'sinatra', require: false
 gem 'erubis'
-gem 'activesupport'
+gem 'activesupport', require: 'active_support/all'
 
 group :development do
   gem 'pry'
