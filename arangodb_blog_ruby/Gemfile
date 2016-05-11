@@ -3,8 +3,9 @@ source 'https://rubygems.org'
 gem 'virtus'
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'sinatra'
+gem 'sinatra', require: false
 gem 'erubis'
+gem 'activesupport'
 
 group :development do
   gem 'pry'
