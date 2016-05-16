@@ -1,9 +1,10 @@
-<%- @articles.each do |article| %>
+<%- @posts.each do |post| %>
     <article>
         <header>
-            <h1><%= article.title %></h1>
+            <h1><%= post.title %></h1>
         </header>
         <section>
+            <p><%= post.body.split("\n\n").first %>
         </section>
         <footer>
         </footer>

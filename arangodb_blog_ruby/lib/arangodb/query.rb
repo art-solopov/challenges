@@ -33,11 +33,14 @@ module ArangoDB
     end
 
     def execute
-      Cursor.new(response: ArangoDB.connection.post(
-                  'cursor',
-                  { query: @query, count: true, batchSize: @batch_size, bind_vars: @bind_vars }
-                )
-                )
+      Cursor.new(
+        response: ArangoDB.connection.post('cursor',
+                                           { query: @query,
+                                             count: true,
+                                             batchSize: @batch_size,
+                                             bind_vars: @bind_vars }
+                                          )
+      )
     end
   end
 end

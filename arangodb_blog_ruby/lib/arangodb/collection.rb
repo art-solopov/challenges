@@ -21,12 +21,12 @@ module ArangoDB
       ArangoDB.connection.post('collection', { name: @name }).success?
     end
 
-    def first(count)
-      SimpleQuery.new(:first, { collection: @name, count: count })
+    def first(count, skip: nil)
+      SimpleQuery.new(:first, { collection: @name, count: count, skip: skip }.compact)
     end
 
-    def last(count)
-      SimpleQuery.new(:last, { collection: @name, count: count })
+    def last(count, skip: nil)
+      SimpleQuery.new(:last, { collection: @name, count: count, skip: skip }.compact)
     end
   end
 end
