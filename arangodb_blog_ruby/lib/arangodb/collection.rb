@@ -28,5 +28,12 @@ module ArangoDB
     def last(count, skip: nil)
       SimpleQuery.new(:last, { collection: @name, count: count, skip: skip }.compact)
     end
+
+    def paginate(page, per_page, order: :created_at)
+      AQLQuery.new(
+        "FOR p IN #{@name} LIMIT @offset, @count SORT p.#{order} ASC RETURN p",
+        bind_vars: { offset: (page - 1) * per_page, count: per_page }
+      )
+    end
   end
 end

@@ -2,6 +2,7 @@
     <article>
         <header>
             <h1><%= post.title %></h1>
+            <time><%= post.created_at %>
         </header>
         <section>
             <p><%= post.body.split("\n\n").first %>

@@ -38,7 +38,7 @@ module ArangoDB
                                            { query: @query,
                                              count: true,
                                              batchSize: @batch_size,
-                                             bind_vars: @bind_vars }
+                                             bindVars: @bind_vars }
                                           )
       )
     end
