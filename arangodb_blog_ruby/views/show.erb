@@ -1,0 +1,20 @@
+<article>
+    <header>
+        <h1><%= @post.title %></h1>
+        <small>
+            <span>Tags:</span>
+            <% @post.tags.each do |tag| %>
+                <a href="/tags/<%= tag %>"><%= tag %></a>
+            <% end %>
+        </small>
+    </header>
+    <section>
+        <% @post.body.split("\n\n").each do |par| %>
+            <p><%= par %></p>
+        <% end %>
+    </section>
+    <footer>
+        <a href="/">Back</a>
+    </footer>
+</article>
+

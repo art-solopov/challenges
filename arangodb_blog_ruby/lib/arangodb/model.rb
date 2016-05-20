@@ -19,8 +19,6 @@ module ArangoDB
       self._key = body['key']
     end
 
-    private :create, :update, :read_metadata
-
     class << self
       def all(collection, limit: nil)
         SimpleQuery.new(:all, collection: collection, limit: limit)
