@@ -35,5 +35,30 @@ module ArangoDB
         bind_vars: { offset: (page - 1) * per_page, count: per_page }
       )
     end
+
+    def save(document)
+      data = document.to_json_data
+      response = if document._id
+                   update_document(document._key, data)
+                 else
+                   create_document(data)
+                 end
+      body = response.body
+      return false if body['error']
+      document._id = body['id']
+      document._rev = body['rev']
+      document._key = body['key']
+      true
+    end
+
+    private
+
+    def create_document(data)
+      ArangoDB.connection.post("document?collection=#{name}", data.to_json)
+    end
+
+    def update_document(key, data)
+      ArangoDB.connection.put("document/#{name}/#{key}", data.to_json)
+    end
   end
 end
