@@ -3,7 +3,6 @@ module ArangoDB
     def initialize(name)
       @name = name
       res = ArangoDB.connection.get("collection/#{name}")
-      puts res.status
       if res.success?
         @persisted = true
         @type = res.body['type']
@@ -29,10 +28,23 @@ module ArangoDB
       SimpleQuery.new(:last, { collection: @name, count: count, skip: skip }.compact)
     end
 
-    def paginate(page, per_page, order: :created_at)
+    def paginate(page, per_page, order: :created_at, tags: nil)
+      qry = "FOR p IN @@collection"
+      case tags
+      when Array then qry += ' FILTER LENGTH(INTERSECTION(p.tags, @tags))'
+      when -> (x) { x.present? } then qry += ' FILTER @tags IN p.tags'
+      end
+      qry += " LIMIT @offset, @count SORT p.#{order} ASC RETURN p"
+
       AQLQuery.new(
-        "FOR p IN #{@name} LIMIT @offset, @count SORT p.#{order} ASC RETURN p",
-        bind_vars: { offset: (page - 1) * per_page, count: per_page }
+        qry,
+        batch_size: per_page,
+        bind_vars: {
+          offset: (page - 1) * per_page,
+          count: per_page,
+          tags: tags,
+          "@collection": name
+        }.compact
       )
     end
 
