@@ -10,10 +10,14 @@ helpers do
   def page
     params[:page].presence || 1
   end
+
+  def posts
+    @posts ||= @collection.paginate(page, PER_PAGE, tags: @tag)
+             .execute.as(Post)
+  end
 end
 
 get '/' do
-  @posts = @collection.paginate(page, PER_PAGE).execute.as(Post)
   erb :index
 end
 
@@ -24,7 +28,5 @@ end
 
 get '/tags/:tag' do
   @tag = params[:tag]
-  @posts = @collection.paginate(page, PER_PAGE, tags: @tag)
-           .execute.as(Post)
   erb :index
 end

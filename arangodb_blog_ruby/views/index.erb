@@ -1,4 +1,8 @@
-<%- @posts.each do |post| %>
+<% if @tag %>
+    <div id="tag">Posts by tag <%= @tag %></div>
+<% end %>
+
+<%- posts.each do |post| %>
     <article>
         <header>
             <h1><%= post.title %></h1>
