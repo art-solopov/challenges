@@ -6,7 +6,9 @@ require 'arangodb/model'
 module ArangoDB
   class << self
     def connection
-      @connection ||= Faraday.new(url: 'http://localhost:8529/_db/blog/_api/') do |faraday|
+      host = ENV['DBHOST'] || 'localhost'
+      port = ENV['DBPORT'] || '8529'
+      @connection ||= Faraday.new(url: "http://#{host}:#{port}/_db/blog/_api/") do |faraday|
         faraday.request  :json
         faraday.response :json
         faraday.adapter  Faraday.default_adapter
