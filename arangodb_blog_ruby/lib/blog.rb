@@ -1,7 +1,5 @@
 require 'models/post'
 
-PER_PAGE = 5
-
 before do
   @collection = ArangoDB::Collection.new('posts')
 end
@@ -12,8 +10,7 @@ helpers do
   end
 
   def posts
-    @posts ||= @collection.paginate(page, PER_PAGE, tags: @tag)
-             .execute.as(Post)
+    @posts ||= Post.by_tags(page: params[:page], tags: @tag)
   end
 end
 
