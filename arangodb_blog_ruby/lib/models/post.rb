@@ -4,7 +4,7 @@ class Post < ArangoDB::Model
   attribute :title, String
   attribute :body, String
   attribute :tags, Array[String]
-  attribute :created_at, DateTime, default: -> { Time.now }
+  attribute :created_at, DateTime, default: proc { Time.now }
 
   PER_PAGE = 10
 
