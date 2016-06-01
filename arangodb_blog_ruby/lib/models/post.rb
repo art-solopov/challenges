@@ -19,14 +19,14 @@ class Post < ArangoDB::Model
       end
       qry += " LIMIT @offset, @count SORT p.#{order} ASC RETURN p"
 
-      AQLQuery.new(
+      ArangoDB::AQLQuery.new(
         qry,
         batch_size: per_page,
         bind_vars: {
           offset: (page - 1) * per_page,
           count: per_page,
           tags: tags,
-          "@collection": name
+          "@collection": collection
         }.compact
       ).execute.as(self)
     end

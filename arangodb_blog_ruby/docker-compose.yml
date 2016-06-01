@@ -1,0 +1,16 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+      - '4567:4567'
+    links:
+      - arangodb
+    environment:
+      - DBHOST=arangodb
+  arangodb:
+    image: arangodb:latest
+    environment:
+      - ARANGO_NO_AUTH=1
+    expose:
+      - '8529'

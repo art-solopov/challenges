@@ -10,7 +10,7 @@ helpers do
   end
 
   def posts
-    @posts ||= Post.by_tags(page: params[:page], tags: @tag)
+    @posts ||= Post.by_tags(page: page, tags: @tag)
   end
 end
 
