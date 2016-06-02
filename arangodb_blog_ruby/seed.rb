@@ -7,12 +7,16 @@ $LOAD_PATH << 'lib'
 require 'arangodb'
 require 'models/post'
 
-posts = 1.upto(10).map do |i|
+tags = 1.upto(12).map { Faker::Lorem.word  }.uniq
+
+posts = 1.upto(20).map do |i|
   Post.new(
     title: Faker::Lorem.sentence,
     body: Faker::Lorem.paragraphs(3).join("\n\n"),
-    tags: Faker::Lorem.words(5)
+    tags: tags.sample(rand(3..7))
   )
 end
 
-puts JSON.pretty_generate(posts.map(&:to_json_data))
+File.open('seed.json', 'w') do |f|
+  f.write JSON.pretty_generate(posts.map(&:to_json_data))
+end

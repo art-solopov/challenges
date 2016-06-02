@@ -17,7 +17,8 @@ class Post < ArangoDB::Model
       when Array then qry += ' FILTER LENGTH(INTERSECTION(p.tags, @tags))'
       when -> (x) { x.present? } then qry += ' FILTER @tags IN p.tags'
       end
-      qry += " LIMIT @offset, @count SORT p.#{order} ASC RETURN p"
+      qry = tag_query(tags, collection) +
+        " LIMIT @offset, @count SORT p.#{order} ASC RETURN p"
 
       ArangoDB::AQLQuery.new(
         qry,
@@ -29,6 +30,30 @@ class Post < ArangoDB::Model
           "@collection": collection
         }.compact
       ).execute.as(self)
+    end
+
+    def paginator(per_page: PER_PAGE, tags: nil, collection: :posts)
+      subqry = ' COLLECT WITH COUNT INTO length RETURN ' \
+        '{count: length, pages: CEIL(length / @per_page)}'
+      ArangoDB::AQLQuery.new(
+        tag_query(tags, collection) + subqry,
+        bind_vars: {
+          per_page: per_page,
+          tags: tags,
+          "@collection": collection
+        }.compact
+      ).execute.result.first&.with_indifferent_access
+    end
+
+    private
+
+    def tag_query(tags = nil, collection = :posts)
+      qry = "FOR p IN @@collection"
+      case tags
+      when Array then qry += ' FILTER LENGTH(INTERSECTION(p.tags, @tags))'
+      when -> (x) { x.present? } then qry += ' FILTER @tags IN p.tags'
+      end
+      qry
     end
   end
 

@@ -12,6 +12,10 @@ helpers do
   def posts
     @posts ||= Post.by_tags(page: page, tags: @tag)
   end
+
+  def paginator
+    @paginator ||= Post.paginator(tags: @tag)
+  end
 end
 
 get '/' do

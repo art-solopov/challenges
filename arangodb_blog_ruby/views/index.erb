@@ -1,5 +1,5 @@
 <% if @tag %>
-    <div id="tag">Posts by tag <%= @tag %></div>
+    <div id="tag">Posts by tag <%= @tag %> (<%= paginator[:count] %>)</div>
 <% end %>
 
 <%- posts.each do |post| %>
