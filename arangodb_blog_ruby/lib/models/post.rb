@@ -33,8 +33,16 @@ class Post < ArangoDB::Model
     end
 
     def paginator(per_page: PER_PAGE, tags: nil, collection: :posts)
-      subqry = ' COLLECT WITH COUNT INTO length RETURN ' \
-        '{count: length, pages: CEIL(length / @per_page)}'
+      subqry = <<-AQL
+      COLLECT WITH COUNT INTO length
+      RETURN {
+        count: length,
+        pages: CEIL(length / @per_page),
+        enabled: length > @per_page
+      }
+      AQL
+      # subqry = ' COLLECT WITH COUNT INTO length RETURN ' \
+      #   '{count: length, pages: CEIL(length / @per_page)}'
       ArangoDB::AQLQuery.new(
         tag_query(tags, collection) + subqry,
         bind_vars: {

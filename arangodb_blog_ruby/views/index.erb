@@ -16,3 +16,21 @@
         </footer>
     </article>
 <% end %>
+
+<% if paginator[:enabled] %>
+    <article class="paginator">
+        <ul>
+            <% 1.upto(paginator[:pages]) do |page| %>
+                <li>
+                    <% if page == current_page %>
+                        <span><%= page %></span>
+                    <% else %>
+                        <a href="<%= page_href(page) %>"><%= page %></a>
+                    <% end %>
+                </li>
+            <% end %>
+        </ul>
+    </article>
+<% end %>
+
+<!-- <pre><%= paginator.to_yaml %></pre> -->

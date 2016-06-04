@@ -154,19 +154,23 @@ nav a:hover {
    Author's custom styles
    ========================================================================== */
 
+body {
+    background: #EEE;
+}
 
+.paginator ul {
+    padding-left: 0.5em;
+    font-size: 120%;
+}
 
+.paginator li {
+    display: inline;
+    padding: 0 2px;
+}
 
-
-
-
-
-
-
-
-
-
-
+.paginator a {
+    text-decoration: none;
+}
 
 /* ==========================================================================
    Media Queries
