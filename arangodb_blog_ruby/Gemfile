@@ -6,10 +6,12 @@ gem 'faraday_middleware'
 gem 'sinatra', require: false
 gem 'erubis'
 gem 'activesupport', require: 'active_support/all'
+gem 'rake'
 
 group :development, :test do
   gem 'pry'
   gem 'awesome_print'
   gem 'minitest'
   gem 'faker'
+  gem 'rubocop'
 end

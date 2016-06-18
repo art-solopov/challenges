@@ -1,4 +1,8 @@
+require 'sinatra'
 require 'models/post'
+
+set :public_folder, File.expand_path('../public', File.dirname(__FILE__))
+set :views, File.expand_path('../views', File.dirname(__FILE__))
 
 before do
   @collection = ArangoDB::Collection.new('posts')

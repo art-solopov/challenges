@@ -1,0 +1,70 @@
+task :env do
+  require 'bundler'
+  Bundler.require(:default, :development)
+  LIB_DIR = File.expand_path('lib', File.dirname(__FILE__))
+  $LOAD_PATH << LIB_DIR
+  require 'configuration'
+  require 'arangodb'
+end
+
+desc "Run the shell"
+task shell: [:env] do
+  Dir[File.join(LIB_DIR, 'models', '*.rb')].each do |model|
+    puts "requiring #{model}"
+    require model
+  end
+  binding.pry
+end
+
+namespace :db do
+  desc 'Create the db'
+  task create: [:env] do
+    req = ArangoDB.connection.post(
+      '../../../_api/database', name: ArangoDB::DBNAME
+    )
+    if req.success?
+      puts "Database #{ArangoDB::DBNAME} created"
+    else
+      puts "Error: #{req.body['errorMessage']}"
+    end
+  end
+
+  desc 'Create the posts collection'
+  task collection: [:env] do
+    req = ArangoDB.connection.post(
+      'collection', name: 'posts'
+    )
+    if req.success?
+      puts 'Collection \'posts\' created'
+    else
+      puts "Error: #{req.body['errorMessage']}"
+    end
+  end
+
+  desc 'Seed the database'
+  task seed: [:env] do
+    require 'models/post'
+
+    tags = 1.upto(12).map { Faker::Lorem.word  }.uniq
+
+    posts = (0...20).map do |i|
+      created = Time.now - i.days + rand(-10..10).hours
+      Post.new(
+        title: Faker::Lorem.sentence,
+        body: Faker::Lorem.paragraphs(3).join("\n\n"),
+        tags: tags.sample(rand(3..7)),
+        created_at: created
+      ).to_json_data
+    end
+
+    req = ArangoDB.connection.post(
+      'import?type=array&collection=posts&createCollection=false',
+      posts
+    )
+    if req.success?
+      puts 'Posts seeded'
+    else
+      puts "Error: #{req.body['errorMessage']}"
+    end
+  end
+end
