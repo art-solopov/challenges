@@ -1,0 +1,7 @@
+[package]
+name = "state_machine_rust"
+version = "0.1.0"
+authors = ["Artemiy Solopov <art-solopov@yandex.ru>"]
+
+[dependencies]
+time = "0.1.36"
