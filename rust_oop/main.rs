@@ -4,24 +4,26 @@ trait Good {
 }
 
 trait Drink : Good {
-    fn flavor(&self) -> String;
+    fn flavour(&self) -> String;
 }
 
 trait Snack : Good {
     fn snack_type(&self) -> String;
 }
 
+/* Chocolate */
+
 struct Chocolate {
-    _name: String,
-    _manufacturer: String
+    name: String,
+    manufacturer: String
 }
 
 impl Good for Chocolate {
     fn name(&self) -> String {
-        return format!("{} {}", self._manufacturer, self._name);
+        return format!("{} {}", self.manufacturer, self.name);
     }
     fn manufacturer(&self) -> String {
-        return format!("{}", self._manufacturer);
+        return format!("{}", self.manufacturer);
     }
 }
 
@@ -31,15 +33,60 @@ impl Snack for Chocolate {
     }
 }
 
-impl Good for Chips {
-    fn
+/* Crisps */
+
+struct Crisps {
+    manufacturer: String,
+    flavour: String
 }
+
+impl Good for Crisps {
+    fn name(&self) -> String {
+        return format!("{} — {} flavour", self.manufacturer, self.flavour);
+    }
+    fn manufacturer(&self) -> String {
+        return format!("{}", self.manufacturer);
+    }
+}
+
+impl Snack for Crisps {
+    fn snack_type(&self) -> String {
+        return String::from("Crisps");
+    }
+}
+
+/* Coke */
+
+struct Coke {
+    manufacturer: String,
+    name: String
+}
+
+impl Good for Coke {
+    fn name(&self) -> String {
+        return format!("{}", self.name);
+    }
+    fn manufacturer(&self) -> String {
+        return format!("{}", self.manufacturer);
+    }
+}
+
+impl Drink for Coke {
+    fn flavour(&self) -> String { return String::from("Coke") } 
+}
+
+/* Main */
 
 fn main() {
     let lindt = Chocolate {
-        _name: String::from("Milk"),
-        _manufacturer: String::from("Lindt")
+        name: String::from("Milk"),
+        manufacturer: String::from("Lindt")
+    };
+    let lays_salt = Crisps {
+        manufacturer: String::from("Lays"),
+        flavour: String::from("Salt")
     };
 
     println!("{}: {}", lindt.snack_type(), lindt.name());
+    println!("{}", lays_salt.name());
 }
